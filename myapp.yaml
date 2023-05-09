@@ -1,0 +1,40 @@
+---
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  labels:
+    run: app
+  name: app
+spec:
+  replicas: 2
+  selector:
+    matchLabels:
+      run: app
+  template:
+    metadata:
+      labels:
+        run: app
+    spec:
+      containers:
+      - name: app
+        image: httpd
+        ports:
+        - containerPort: 80
+
+---
+
+apiVersion: v1
+kind: Service
+metadata:
+    name: test-local
+spec:
+    selector:
+      run: app
+    type: NodePort
+    ports: 
+    - name: http
+      protocol: TCP
+      port: 80
+      targetPort: 80
+      nodePort: 30030
+
